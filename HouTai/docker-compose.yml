@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  Houtai:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - FLASK_ENV=development
+      - DATABASE_URI=mysql+pymysql://root:123456@db/authbase
+
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: authbase
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./authbase.sql:/docker-entrypoint-initdb.d/authbase.sql
+
+volumes:
+  mysql_data:
